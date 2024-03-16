@@ -12,7 +12,7 @@
   * The degree to which the various parts of a software component are related
   * Example of garbage classification
   * Aim for high cohesion
-  * ![entropy-and-cohesion](/Users/hadjshell/Library/CloudStorage/OneDrive-Personal/Extracurricular-Content/SOLID//imgs/entropy-and-cohesion.svg)
+  * ![entropy-and-cohesion](imgs/entropy-and-cohesion.svg)
 * Coupling
   * The level of inter dependency between various software components
   * Aim for loose coupling
@@ -80,16 +80,15 @@
 
 * Creational patterns concern the process of object creation
 * The problem: **Hard-coding the classes that get instantiated**
-  * Class constructor requires a lot of information
-  * Objects that need other objects or "parts" to construct them
 
 ### Builder
 
-* **Encapsulate the construction of a product and allow it to be constructed in steps**
+* Encapsulate the construction of a product and allow it to be constructed **in steps**
 * ![builder](imgs/builder.png)
 * When to use?
-  * The algorithm for creating a complex object should be independent of the parts that make up the object and how they're assembled
-  * The construction process must allow different representations for the object that's constructed
+  * Several flavors of an object may be asked for
+  * There are a lot of steps involved in creation of an object
+  * Avoid to have too many parameters in the constructor
   * **Often used for building Composite**
 * How to use?
   * The client creates the Director object and configures it with the desired Builder object, or the client play the role of Director
@@ -109,6 +108,32 @@
 * Pitfalls
   * Possibility of partially initialized object. If required properties are missing, `build()` method should provide suitable default values or throw an exception
 
+### Factory Method
+
+* Define an interface for creating an object, but let subclasses **decide** which class to instantiate. Factory Method lets a class **defer** instantiation to subclasses
+* ![factory](imgs/factory.png)
+  * **Parallel class hierarchy**
+* When to use?
+  * A class can't anticipate the class of objects it must create
+  * A class wants its subclasses to specify the objects it creates
+  * Classes delegate responsibility to one of several helper subclasses, and you want to localize the knowledge of which helper subclass is the delegate
+* How to use?
+  * Creator relies on its subclasses to define the factory method so that it returns an instance of the appropriate ConcreteProduct
+* In real world
+  * The Creator can be a concrete class and provide a default implementation of factory method
+  * The factory method not only instantiates the ConcreteProduct, but can also perform additional operations
+* Examples
+  * `iterator()` method in `java.util.AbstractCollection`
+* Pitfalls
+  * It forces you to subclass the Creator class just to create a particular ConcreteProduct object
+* Simple Factory Method
+  * It isn't a design pattern, it is a programming idiom
+  * Move the instantiation logic to a separate class and most commonly to a static method of this class
+    * Applying the Dependency Inversion Principle
+  * Typically used if we have more than one option when instantiating the object and a simple logic is used to decide the correct class (`switch` block)
+    * "*Parameterized factory method*"
+    * **No inheritance compared to Factory Method** (Just a ConcreteCreator)
+
 ***
 
 ## Structural Design Patterns
@@ -121,3 +146,8 @@
 
 * Behavioral patterns characterize the ways in which classes or objects interact and distribute responsibility
 
+***
+
+## References
+
+* https://java-design-patterns.com/patterns/
