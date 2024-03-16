@@ -134,6 +134,23 @@
     * "*Parameterized factory method*"
     * **No inheritance compared to Factory Method** (Just a ConcreteCreator)
 
+### Abstract Factory
+
+* Provide an interface for creating families of related or dependent objects (a **kit**) without specifying their concrete classes
+* ![abstract-factory](imgs/abstract-factory.png)
+  * **Like a bundle of Factory Methods**
+* When to use?
+  * A family of related Product objects is designed to be used together
+* How to use?
+  * Normally a single instance of a ConcreteFactory class is created at run-time. This concrete factory creates product objects having a particular implementation. To create different product objects, clients should use a different concrete factory
+* In real world
+  * A concrete factory is often a singleton
+  * AbstractFactory classes are often implemented with factory methods, but they can also be implemented using Prototype
+* Examples
+* Pitfalls
+  * Extending abstract factories to produce new sets of Products requires changing the AbstractFactory class and all of its subclasses
+  * Difficult to realise the need at the start of the development and usually starts out as a Factory Method
+
 ***
 
 ## Structural Design Patterns
