@@ -113,25 +113,6 @@
 * Pitfalls
   * Possibility of partially initialized object. If required properties are missing, `build()` method should provide suitable default values or throw an exception
 
-### Prototype
-
-* Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype
-* ![prototype](imgs/prototype.png)
-* When to use?
-  * When instances of a class can have one of only a few different combinations of state
-  * We have a complex object that is costly to create
-  * To avoid building a class hierarchy of factories that parallels the class hierarchy of products
-* How to use?
-  * A client asks a prototype to clone itself
-* In real world
-  * Pay attention to the choice of shallow copy or deep copy
-  * Reset the state of the object  before returning the prototype
-  * A prototype registry can solve the problem of getting the initial instances
-* Examples
-  * In Java this typically means using the `clone()` method, or de-serialization when you need deep copies
-* Pitfalls
-  * An object whose states are largely mutable objects is complicated to clone
-
 ### Factory Method
 
 * Define an interface for creating an object, but let subclasses **decide** which class to instantiate. Factory Method lets a class **defer** instantiation to subclasses
@@ -174,6 +155,107 @@
 * Pitfalls
   * Extending abstract factories to produce new sets of Products requires changing the AbstractFactory class and all of its subclasses
   * Difficult to realise the need at the start of the development and usually starts out as a Factory Method
+
+### Prototype
+
+* Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype
+* ![prototype](imgs/prototype.png)
+* When to use?
+  * When instances of a class can have one of only a few different combinations of state
+  * We have a complex object that is costly to create
+  * To avoid building a class hierarchy of factories that parallels the class hierarchy of products
+* How to use?
+  * A client asks a prototype to clone itself
+* In real world
+  * Pay attention to the choice of shallow copy or deep copy
+  * Reset the state of the object  before returning the prototype
+  * A prototype registry can solve the problem of getting the initial instances
+* Examples
+  * In Java this typically means using the `clone()` method, or de-serialization when you need deep copies
+* Pitfalls
+  * An object whose states are largely mutable objects is complicated to clone
+
+### Singleton
+
+* Ensure a class only has one instance, and provide a global point of access to it
+
+* ![singleton](imgs/singleton.png)
+
+* When to use?
+
+  * There must be exactly one instance of a class, and it must be accessible to clients from a well-known access point
+
+* How to use?
+
+  * Class constructors must be `private`
+
+  * Class itself keeps the instance, and gives access to it
+
+  * Eager Singleton
+
+    * Create singleton as soon as the class is loaded
+
+    * ```java
+      class Singleton {
+        private static Singleton uniqueInstance = new Singleton();
+        private Singleton() {}
+        public static Singleton getInstance() {
+          return uniqueInstance;
+        }
+      }
+      ```
+
+  * Lazy Singleton
+
+    * Singleton is created when it is required the first time
+
+    * ```java
+      // Double-checked locking
+      class Singleton {
+        private volatile static Singleton uniqueInstance;
+        private Singleton() {}
+        public static Singleton getInstance() {
+          if (uniqueInstance == null) {
+            synchronized (Singleton.class) {
+              if (uniqueInstance == null) {
+                uniqueInstance = new Singleton();
+              }
+            }
+          }
+          return uniqueInstance;
+        }
+      }
+      
+      // Initialisation holder
+      class Singleton {
+        private static class UniqueInstanceHolder {
+          static Singleton uniqueInstance = new Singleton();
+        }
+        public static Singleton getInstance() {
+          return UniqueInstanceHolder.uniqueInstance;
+        }
+      }
+      ```
+
+* In real world
+
+  * `getInstance()` should not expect any arguments
+  * Make sure your singletons are not carrying a lot of mutable global states
+  * There are very few situation where a Singleton is a good choice
+
+* Examples
+
+  * `java.lang.Runtime`
+  * Application configuration
+  * Logging frameworks
+  * Spring framework treats all beans by default Singletons
+
+* Pitfalls
+
+  * Lazy Singleton may cause concurrency issues (more than one instances are created by different threads)
+  * Singleton can deceive you about the true dependency
+  * Singleton in Java is held per class loader not per JVM, so they may not be the true singleton in web applications
+  * Nowadays, singleton is considered as a bad design practice
 
 ***
 
