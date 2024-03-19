@@ -79,7 +79,12 @@
 ## Creation Design Patterns
 
 * Creational patterns concern the process of object creation
-* The problem: **Hard-coding the classes that get instantiated**
+
+* The problem: **Hard-coding the classes that get instantiated** (`new`)
+
+  *  Aim to hide the concrete product classes from the client, thereby reducing the number of names clients know about
+
+  > *Programming to an interface, not an implementation*
 
 ### Builder
 
@@ -107,6 +112,25 @@
   * `java.util.Calendar.Builder`
 * Pitfalls
   * Possibility of partially initialized object. If required properties are missing, `build()` method should provide suitable default values or throw an exception
+
+### Prototype
+
+* Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype
+* ![prototype](imgs/prototype.png)
+* When to use?
+  * When instances of a class can have one of only a few different combinations of state
+  * We have a complex object that is costly to create
+  * To avoid building a class hierarchy of factories that parallels the class hierarchy of products
+* How to use?
+  * A client asks a prototype to clone itself
+* In real world
+  * Pay attention to the choice of shallow copy or deep copy
+  * Reset the state of the object  before returning the prototype
+  * A prototype registry can solve the problem of getting the initial instances
+* Examples
+  * In Java this typically means using the `clone()` method, or de-serialization when you need deep copies
+* Pitfalls
+  * An object whose states are largely mutable objects is complicated to clone
 
 ### Factory Method
 
