@@ -168,7 +168,7 @@
   * A client asks a prototype to clone itself
 * In real world
   * Pay attention to the choice of shallow copy or deep copy
-  * Reset the state of the object  before returning the prototype
+  * Reset the state of the object before returning the prototype
   * A prototype registry can solve the problem of getting the initial instances
 * Examples
   * In Java this typically means using the `clone()` method, or de-serialization when you need deep copies
@@ -256,6 +256,34 @@
   * Singleton can deceive you about the true dependency
   * Singleton in Java is held per class loader not per JVM, so they may not be the true singleton in web applications
   * Nowadays, singleton is considered as a bad design practice
+
+### Object Pool
+
+* When objects are expensive to create and they are needed only for short periods of time it is advantageous to utilize the Object Pool
+* The Object Pool provides a cache for instantiated objects tracking which ones are in use and which are available
+* ![object-pool](imgs/object-pool.png)
+* When to use?
+  * **Only beneficial if costly initialisation is involved**
+  * Typically objects that represent fixed external system resources like threads, connection, etc. are good candidates for pooling
+* How to use?
+  * A **thread-safe** caching of objects should be done in the pool
+  * Methods to acquire and release the objects should be provided
+  * The pool should reset the objects before giving them out
+  * We have to decide whether to create new objects when pool is empty or to wait until an object is available
+    * The choice is decided by whether the object is tied to a fixed number of external resources
+* In real world
+  * Resetting objects should not be a costly operation otherwise we may end up losing the performance savings
+  * We can pre-cache objects to improve the performance; however, it may increase the start time and memory consumption
+  * Object pool can be parameterized to cache
+  * Do not pool long-lived objects
+* Examples
+  * `java.util.concurrent.ThreadPoolExecutor`
+    * Pool threads
+  * Apache commons dbcp library `org.apache.commons.dbcp.BasicDataSource`
+    * Pool database connections
+* Pitfalls
+  * Releasing objects back to pool is vital for correctly working
+  * Implmentation and refactoring with legacy code can be difficult
 
 ***
 
